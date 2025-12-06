@@ -61,7 +61,7 @@ public class ExpenseController {
 
     private Long getUserIdFromUserDetails(UserDetails userDetails) {
         String username = userDetails.getUsername();
-        User user = userRepository.findByName(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return user.getId();
     }

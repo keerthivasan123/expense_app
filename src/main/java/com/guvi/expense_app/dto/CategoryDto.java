@@ -1,12 +1,10 @@
 package com.guvi.expense_app.dto;
 
-import lombok.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
 public class CategoryDto {
+    @NotBlank(message = "Category name cannot be blank")
     private String categoryName;
 }

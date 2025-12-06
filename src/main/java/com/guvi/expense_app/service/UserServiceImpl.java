@@ -3,6 +3,7 @@ package com.guvi.expense_app.service;
 import com.guvi.expense_app.dto.LoginDto;
 import com.guvi.expense_app.dto.TokenDto;
 import com.guvi.expense_app.dto.UserDto;
+import com.guvi.expense_app.exception.UserAlreadyExistsException;
 import com.guvi.expense_app.model.User;
 import com.guvi.expense_app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(UserDto userDto) {
+        if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
+            throw new UserAlreadyExistsException("Username '" + userDto.getUsername() + "' is already taken.");
+        }
         User user = new User();
-        user.setName(userDto.getUsername());
+        user.setUsername(userDto.getUsername());
         user.setHashPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRole("USER");
         return userRepository.save(user);
