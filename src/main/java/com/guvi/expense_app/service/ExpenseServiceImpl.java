@@ -38,7 +38,6 @@ public class ExpenseServiceImpl implements ExpenseService {
         expense.setCategory(category);
         expense.setPrice(expenseDto.getPrice());
         expense.setDate(expenseDto.getDate());
-        expense.setUser(user);
         return expenseRepository.save(expense);
     }
 

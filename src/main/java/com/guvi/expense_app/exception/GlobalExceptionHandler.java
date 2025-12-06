@@ -4,6 +4,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,10 +43,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleBadCredentials(BadCredentialsException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(Exception.class)
-    public Map<String, String> handleOthers(Exception ex){
+    public ResponseEntity<Object> handleOthers(Exception ex){
         Map<String, String> errors = new HashMap<>();
         errors.put("error", ex.getMessage());
-        return errors;
+        return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
